@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculatrice</title>
+    <style>
+        #container {
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        #container_number, #container_operator {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            height: 100px;
+            border: 1px solid;
+            margin: 5px;
+            text-align: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+
+        #container_number .btn {
+            flex: 1 1 80px;
+        }
+
+        #container_operator .btn {
+            flex: 1 1 50px;
+        }
+
+        #result {
+            width: 100%;
+            height: 50px;
+            font-size: 18px;
+            text-align: right;
+        }
+
+        #history {
+            width: 100%;
+            height: 120px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div id="container">
+    <div id="container_history">
+        <h4>Historique</h4>
+        <button id="btn-histo" style="display: none">Effacer l'historique</button>
+    </div>
+    <div id="container_result">
+        <input id="result" type="text" value="" readonly placeholder="0">
+    </div>
+
+    <div id="container_number">
+        <div class="btn" onclick='btnValue(this)'>7</div>
+        <div class="btn" onclick='btnValue(this)'>8</div>
+        <div class="btn" onclick='btnValue(this)'>9</div>
+        <div class="btn" id="btn-c">C</div>
+
+        <div class="btn" onclick='btnValue(this)'>4</div>
+        <div class="btn" onclick='btnValue(this)'>5</div>
+        <div class="btn" onclick='btnValue(this)'>6</div>
+        <div class="btn" onclick='btnValue(this)'>-</div>
+
+
+        <div class="btn" onclick='btnValue(this)'>1</div>
+        <div class="btn" onclick='btnValue(this)'>2</div>
+        <div class="btn" onclick='btnValue(this)'>3</div>
+        <div class="btn" onclick='btnValue(this)'>+</div>
+
+
+    </div>
+    <div id="container_operator">
+        <div class="btn" onclick='btnValue(this)'>0</div>
+        <div class="btn" onclick='btnValue(this)'>.</div>
+        <div class="btn" onclick='btnValue(this)'>/</div>
+        <div class="btn" onclick='btnValue(this)'>*</div>
+    </div>
+    <div class="btn" id="btn-result">=</div>
+</div>
+
+</body>
+
+<script>
+
+
+    function btnValue(val) {
+        let result = document.querySelector("#result");
+        let btnVal = val.textContent;
+        result.setAttribute("value", result.value + btnVal);
+    }
+
+    document.querySelector("#btn-result").addEventListener("click", function () {
+        let result = document.querySelector("#result");
+        let calcul = result.value;
+
+        //calcul
+        let total = eval(result.value);
+        result.setAttribute("value", total.value);
+
+        //history
+        result.setAttribute("value", total);
+        let history = document.querySelector("#container_history");
+        let newContent = document.createTextNode(calcul + " = " + total);
+        let p = document.createElement('p');
+        p.classList.add("calcul");
+        let text = document.createTextNode(newContent.textContent);
+        history.appendChild(p);
+        p.appendChild(text);
+        document.querySelector("#btn-histo").style.display = "block";
+    })
+
+    //bouton C
+    document.querySelector("#btn-c").addEventListener("click", function () {
+        result.setAttribute("value", "");
+    })
+
+    //effacer historique
+    document.querySelector("#btn-histo").addEventListener("click", function () {
+        document.querySelector("#btn-histo").style.display = "none";
+        let calculs = document.getElementsByClassName("calcul");
+        while (calculs.length > 0) {
+            calculs[0].parentNode.removeChild(calculs[0]);
+        }
+    })
+
+</script>
+</html>
